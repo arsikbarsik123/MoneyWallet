@@ -26,9 +26,11 @@ struct DashboardView: View {
         }
     }
     
-//    private var dashboardHeader: some View {
-//        
-//    }
+    private var dashboardHeader: some View {
+        VStack {
+            Text("in work")
+        }
+    }
     
     private var actionButtons: some View {
         HStack(spacing: 16) {
