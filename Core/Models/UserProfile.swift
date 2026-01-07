@@ -1,6 +1,9 @@
-struct UserProfile {
-    let name: String
-    let email: String
-    let avatar: String
-}
+import Foundation
 
+struct UserProfile {
+    var firstName: String
+    var surname: String
+    var email: String
+    var avatarSystemName: String
+    var avatarImageData: Data?
+}

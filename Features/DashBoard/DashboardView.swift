@@ -4,6 +4,7 @@ struct DashboardView: View {
     @StateObject private var viewModel = DashboardViewModel()
     @State private var activeSheet: ActiveSheet?
     @State private var showProfile = false
+    @State private var profileViewModel = ProfileViewModel()
     
     var body: some View {
         NavigationStack {
@@ -24,6 +25,10 @@ struct DashboardView: View {
             }
         }
     }
+    
+//    private var dashboardHeader: some View {
+//        
+//    }
     
     private var actionButtons: some View {
         HStack(spacing: 16) {
@@ -46,7 +51,6 @@ struct DashboardView: View {
     
     private var topBar: some View {
         HStack {
-            Spacer()
             Button {
                 showProfile = true
             } label: {
@@ -54,6 +58,14 @@ struct DashboardView: View {
                     .resizable()
                     .frame(width: 32, height: 32)
             }
+            VStack(alignment: .leading) {
+                Text("Hi, \(profileViewModel.profile.firstName)")
+                    .font(.system(size: 18, weight: .semibold))
+                Text(profileViewModel.profile.email)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.opacity(0.7))
+            }
+            Spacer()
         }
     }
     
