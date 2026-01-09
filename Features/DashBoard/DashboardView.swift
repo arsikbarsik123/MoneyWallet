@@ -3,11 +3,11 @@ import SwiftUI
 struct DashboardView: View {
     @StateObject private var viewModel = DashboardViewModel()
     @State private var activeSheet: ActiveSheet?
-    @State private var showProfile = false
     @State private var profileViewModel = ProfileViewModel()
+    @State private var path = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ZStack {
                 VStack(spacing: 0) {
                     headerBackground
@@ -23,15 +23,28 @@ struct DashboardView: View {
                         transactionsList
                     }
                 }
-                .background(.clear)
-                .sheet(item: $activeSheet) { sheet in
+            }
+            .background(.clear)
+            .sheet(item: $activeSheet) { sheet in
+                switch sheet {
+                case .add:
                     sheetView(sheet)
                 }
-                .navigationDestination(isPresented: $showProfile) {
-                    ProfileView()
-                }
-                .ignoresSafeArea(edges: .top)
             }
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .profile:
+                    ProfileView()
+                case .history:
+                    HistoryView(transactions: viewModel.transactions)
+                case .goal:
+                    GoalView()
+                case .notification:
+                    NotificationView()
+                }
+                
+            }
+            .ignoresSafeArea(edges: .top)
         }
     }
     
@@ -39,14 +52,13 @@ struct DashboardView: View {
         VStack(alignment: .leading) {
             // MARK: - top bar
             HStack {
-                Button {
-                    showProfile = true
-                } label: {
+                NavigationLink(value: Route.profile) {
                     Image(systemName: "person.crop.circle")
                         .resizable()
                         .frame(width: 32, height: 32)
                         .foregroundStyle(.white)
                 }
+                .buttonStyle(.plain)
                 VStack(alignment: .leading) {
                     Text("Hi, \(profileViewModel.profile.firstName)")
                         .font(.system(size: 18, weight: .semibold))
@@ -90,23 +102,48 @@ struct DashboardView: View {
     
     private var actionButtons: some View {
         HStack(spacing: 16) {
-            ActionButton(title: "Add", systemImage: "plus") {
+            Button {
                 activeSheet = .add
+            } label: {
+                ActionButton(title: "Add", systemImage: "plus") {
+                    activeSheet = .add
+                }
             }
-            ActionButton(title: "History", systemImage: "receipt") {
-                activeSheet = .history
+            .buttonStyle(.plain)
+
+            NavigationLink(value: Route.history) {
+                ActionButtonContent(title: "History", systemImage: "receipt")
             }
-            ActionButton(title: "Goal (-)", systemImage: "chart.pie") {
-                activeSheet = .history
+            
+            NavigationLink(value: Route.goal) {
+                ActionButtonContent(title: "Goal (-)", systemImage: "chart.pie")
             }
-            ActionButton(title: "Notifications (-)", systemImage: "bell") {
-                activeSheet = .history
+            
+            NavigationLink(value: Route.notification) {
+                ActionButtonContent(
+                    title: "Notifications (-)",
+                    systemImage: "bell"
+                ) 
             }
+            
         }
     }
     
     private var transactionsList: some View {
         VStack(spacing: 16) {
+            HStack {
+                Text("Last transactions:")
+                    .font(.system(size: 25))
+                    .foregroundStyle(.opacity(0.7))
+                Spacer()
+                NavigationLink(value: Route.history) {
+                    Text("See all")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.black.opacity(0.5))
+                }
+            }
+            .padding(.horizontal, 20)
+            
             ForEach(viewModel.transactions) { transaction in
                 TransactionRow(transaction: transaction)
                     .padding(.horizontal, 20)
@@ -120,17 +157,21 @@ struct DashboardView: View {
             AddTransactionView { transaction in
                 viewModel.add(transaction: transaction)
             }
-        case .history:
-            HistoryView(transactions: viewModel.transactions)
         }
     }
 }
 
 enum ActiveSheet: Identifiable {
     case add
-    case history
     
     var id: Int { hashValue }
+}
+
+private enum Route: Hashable {
+    case profile
+    case history
+    case goal
+    case notification
 }
 
 #Preview {
