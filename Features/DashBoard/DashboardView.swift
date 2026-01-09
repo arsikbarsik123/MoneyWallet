@@ -93,7 +93,13 @@ struct DashboardView: View {
             ActionButton(title: "Add", systemImage: "plus") {
                 activeSheet = .add
             }
-            ActionButton(title: "History", systemImage: "list.bullet") {
+            ActionButton(title: "History", systemImage: "receipt") {
+                activeSheet = .history
+            }
+            ActionButton(title: "Goal (-)", systemImage: "chart.pie") {
+                activeSheet = .history
+            }
+            ActionButton(title: "Notifications (-)", systemImage: "bell") {
                 activeSheet = .history
             }
         }

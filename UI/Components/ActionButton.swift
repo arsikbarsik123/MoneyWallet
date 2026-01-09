@@ -19,20 +19,14 @@ struct ActionButton: View {
                         .foregroundStyle(.blue)
                 }
                 .frame(width: 56, height: 56)
-                .padding()
-                .background(background)
             }
             .buttonStyle(.plain)
             
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.white)
+                .foregroundStyle(.white.opacity(0.85))
         }
-    }
-    
-    private var background: some View {
-        RoundedRectangle(cornerRadius: 14)
-            .fill(.ultraThinMaterial)
+        .frame(maxWidth: .infinity)
     }
 }
 
