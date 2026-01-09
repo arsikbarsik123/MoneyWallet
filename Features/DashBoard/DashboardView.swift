@@ -8,28 +8,84 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-                    topBar
-                    BalanceCardView(balance: viewModel.balance)
-                    actionButtons
-                    transactionsList
+            ZStack {
+                VStack(spacing: 0) {
+                    headerBackground
+                        .frame(height: 320)
+                        .ignoresSafeArea(edges: .top)
+                    Color(.systemBackground)
                 }
-                .padding()
-            }
-            .sheet(item: $activeSheet) { sheet in
-                sheetView(sheet)
-            }
-            .navigationDestination(isPresented: $showProfile) {
-                ProfileView()
+                .ignoresSafeArea()
+                
+                ScrollView {
+                    VStack {
+                        dashboardHeader
+                        transactionsList
+                    }
+                }
+                .background(.clear)
+                .sheet(item: $activeSheet) { sheet in
+                    sheetView(sheet)
+                }
+                .navigationDestination(isPresented: $showProfile) {
+                    ProfileView()
+                }
+                .ignoresSafeArea(edges: .top)
             }
         }
     }
     
     private var dashboardHeader: some View {
-        VStack {
-            Text("in work")
+        VStack(alignment: .leading) {
+            // MARK: - top bar
+            HStack {
+                Button {
+                    showProfile = true
+                } label: {
+                    Image(systemName: "person.crop.circle")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(.white)
+                }
+                VStack(alignment: .leading) {
+                    Text("Hi, \(profileViewModel.profile.firstName)")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text(profileViewModel.profile.email)
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundStyle(.white.opacity(0.7))
+                }
+                Spacer()
+                
+                Button {
+                    // future menu
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundStyle(.white)
+                }
+            }
+            
+            //MARK: - Balance
+            BalanceCardView(balance: viewModel.balance)
+            
+            //MARK: - Active buttons
+            actionButtons
         }
+        .padding()
+        .padding(.top, 50)
+        .padding(.bottom, 14)
+        .background(
+            headerBackground
+                .ignoresSafeArea(edges: .top)
+        )
+    }
+    
+    private var headerBackground: some View {
+        LinearGradient(
+            colors: [.blue, .indigo],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
     }
     
     private var actionButtons: some View {
@@ -47,27 +103,8 @@ struct DashboardView: View {
         VStack(spacing: 16) {
             ForEach(viewModel.transactions) { transaction in
                 TransactionRow(transaction: transaction)
+                    .padding(.horizontal, 20)
             }
-        }
-    }
-    
-    private var topBar: some View {
-        HStack {
-            Button {
-                showProfile = true
-            } label: {
-                Image(systemName: "person.crop.circle")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-            }
-            VStack(alignment: .leading) {
-                Text("Hi, \(profileViewModel.profile.firstName)")
-                    .font(.system(size: 18, weight: .semibold))
-                Text(profileViewModel.profile.email)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(.opacity(0.7))
-            }
-            Spacer()
         }
     }
     
@@ -88,4 +125,8 @@ enum ActiveSheet: Identifiable {
     case history
     
     var id: Int { hashValue }
+}
+
+#Preview {
+    DashboardView()
 }

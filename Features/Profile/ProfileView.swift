@@ -9,21 +9,7 @@ struct ProfileView: View {
             header
             
             List {
-                
-                
                 Section {
-                    infoRow("Email", viewModel.profile.email)
-                    infoRow("Currency", "USD")
-                    infoRow("Language", "English")
-                    infoRow("Email", viewModel.profile.email)
-                    infoRow("Currency", "USD")
-                    infoRow("Language", "English")
-                    infoRow("Email", viewModel.profile.email)
-                    infoRow("Currency", "USD")
-                    infoRow("Language", "English")
-                    infoRow("Email", viewModel.profile.email)
-                    infoRow("Currency", "USD")
-                    infoRow("Language", "English")
                     infoRow("Email", viewModel.profile.email)
                     infoRow("Currency", "USD")
                     infoRow("Language", "English")

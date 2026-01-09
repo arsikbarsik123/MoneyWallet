@@ -6,25 +6,21 @@ struct BalanceCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Total balance")
-                .font(.subheadline)
+                .font(.system(size: 25))
                 .foregroundStyle(.white.opacity(0.7))
             Text(balanceFormatted)
+                .font(.system(size: 50))
+                .foregroundStyle(.white)
         }
-        .padding(20)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(background)
-        .cornerRadius(20)
+        .padding(.top, 20)
+        .padding(.bottom, 20)
     }
     
     private var balanceFormatted: String {
         String(format: "$%.2f", balance)
     }
-    
-    private var background: some View {
-        LinearGradient(
-            colors: [.blue, .indigo],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
+}
+
+#Preview {
+    BalanceCardView(balance: 1000000)
 }
