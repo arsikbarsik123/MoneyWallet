@@ -10,10 +10,11 @@ struct TransactionRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(transaction.title)
                     .font(.body)
+                    .foregroundStyle(.black)
                     .fontWeight(.medium)
                 Text(transaction.date, style: .date)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.black.secondary)
             }
             
             Spacer()
