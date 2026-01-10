@@ -12,6 +12,7 @@ struct BalanceCardView: View {
                 .font(.system(size: 50))
                 .foregroundStyle(.white)
         }
+        .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 4)
         .padding(.top, 20)
         .padding(.bottom, 20)
     }

@@ -10,6 +10,7 @@ struct ActionButton: View {
             ActionButtonContent(title: title, systemImage: systemImage)
         }
         .buttonStyle(.plain)
+        .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 4)
     }
 }
 
