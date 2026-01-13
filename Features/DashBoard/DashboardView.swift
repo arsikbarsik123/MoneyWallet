@@ -178,7 +178,7 @@ struct DashboardView: View {
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.top, 5)
+            .padding(.top, 10)
             .frame(height: cardHeight, alignment: .top)
             .background(
                 RoundedRectangle(cornerRadius: 18, style: .continuous)
